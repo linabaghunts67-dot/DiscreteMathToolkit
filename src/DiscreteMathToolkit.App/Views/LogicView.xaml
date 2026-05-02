@@ -1,0 +1,214 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.LogicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vmp:LogicViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="320" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="32,24,32,16" Orientation="Horizontal">
+            <TextBlock Text="Logic &amp; Truth Tables" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="Parse · Truth tables · Simplification"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeBody}"
+                       VerticalAlignment="Bottom"
+                       Margin="16,0,0,8" />
+        </StackPanel>
+
+        <!-- Expression input bar -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Style="{StaticResource CardStyle}"
+                Margin="32,0,16,16">
+            <StackPanel>
+                <TextBlock Text="EXPRESSION" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="{DynamicResource MonoFontFamily}" />
+                    <Button Grid.Column="1" Content="Build table" Command="{Binding BuildTableCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}" Margin="8,0,0,0" />
+                    <Button Grid.Column="2" Content="Simplify" Command="{Binding SimplifyCommand}"
+                            Margin="8,0,0,0" />
+                </Grid>
+                <TextBlock Margin="0,8,0,0"
+                           Foreground="{DynamicResource ForegroundMutedBrush}"
+                           FontSize="{DynamicResource FontSizeCaption}"
+                           Text="Operators: !,~,¬ · AND,&amp; · OR,| · XOR,^ · IMPLIES,-&gt; · IFF,&lt;-&gt;" />
+            </StackPanel>
+        </Border>
+
+        <!-- Truth table -->
+        <Border Grid.Row="2" Grid.Column="0"
+                Style="{StaticResource CardStyle}"
+                Margin="32,0,16,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="TRUTH TABLE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Headers -->
+                        <ItemsControl Grid.Row="0" ItemsSource="{Binding ColumnHeaders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="56" Height="36"
+                                            Background="{DynamicResource SurfaceOverlayBrush}"
+                                            BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                            BorderThickness="0,0,1,1">
+                                        <TextBlock Text="{Binding}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontFamily="{DynamicResource MonoFontFamily}"
+                                                   FontWeight="SemiBold" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Rows -->
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Cells}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="56" Height="32"
+                                                        BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                                        BorderThickness="0,0,1,1">
+                                                    <TextBlock Text="{Binding}"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontFamily="{DynamicResource MonoFontFamily}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
+
+                <!-- Classification -->
+                <Border Grid.Row="2"
+                        Background="{DynamicResource SurfaceOverlayBrush}"
+                        CornerRadius="6"
+                        Padding="14,10"
+                        Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="CLASSIFICATION" Style="{StaticResource CaptionTextStyle}" />
+                        <TextBlock Text="{Binding Classification}" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Simplified form -->
+                <Border Grid.Row="3"
+                        Background="{DynamicResource SurfaceOverlayBrush}"
+                        CornerRadius="6"
+                        Padding="14,10"
+                        Margin="0,8,0,0">
+                    <StackPanel>
+                        <TextBlock Text="SIMPLIFIED FORM" Style="{StaticResource CaptionTextStyle}" />
+                        <TextBlock Text="{Binding SimplifiedForm}"
+                                   FontFamily="{DynamicResource MonoFontFamily}"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Right panel: parse tree + samples + export -->
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Grid.Column="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,32,16">
+            <StackPanel>
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="PARSE TREE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding ParseTreePreview}"
+                                   FontFamily="{DynamicResource MonoFontFamily}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource ForegroundSecondaryBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="SAMPLES" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <ItemsControl ItemsSource="{Binding SampleExpressions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding}"
+                                            Command="{Binding DataContext.LoadSampleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalContentAlignment="Left"
+                                            FontFamily="{DynamicResource MonoFontFamily}"
+                                            FontSize="11"
+                                            Margin="0,0,0,4" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="EXPORT" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <Button Content="Export truth table…" Command="{Binding ExportTableCommand}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status bar -->
+        <Border Grid.Row="3" Grid.ColumnSpan="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="32,8">
+            <TextBlock Text="{Binding StatusLine}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeCaption}" />
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "directed": true,
+  "weighted": true,
+  "nodes": [
+    { "id": 0, "label": "Start",   "x": 100, "y": 200 },
+    { "id": 1, "label": "Design",  "x": 280, "y": 100 },
+    { "id": 2, "label": "Build",   "x": 280, "y": 300 },
+    { "id": 3, "label": "Test",    "x": 460, "y": 200 },
+    { "id": 4, "label": "Deploy",  "x": 640, "y": 200 }
+  ],
+  "edges": [
+    { "from": 0, "to": 1, "weight": 3 },
+    { "from": 0, "to": 2, "weight": 5 },
+    { "from": 1, "to": 3, "weight": 4 },
+    { "from": 2, "to": 3, "weight": 2 },
+    { "from": 3, "to": 4, "weight": 1 }
+  ]
+}

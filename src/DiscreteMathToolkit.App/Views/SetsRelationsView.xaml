@@ -1,0 +1,266 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.SetsRelationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             xmlns:cv="clr-namespace:DiscreteMathToolkit.App.Converters"
+             d:DataContext="{d:DesignInstance Type=vmp:SetsRelationsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <cv:BoolToBitConverter x:Key="BoolToBit" />
+    </UserControl.Resources>
+
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="32,24,32,16" Orientation="Horizontal">
+            <TextBlock Text="Sets &amp; Relations" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="Set ops · Power set · Relation analysis"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeBody}"
+                       VerticalAlignment="Bottom"
+                       Margin="16,0,0,8" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Margin="32,0,32,16" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Set operations -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="SET OPERATIONS" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="A" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding SetAText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                                <TextBlock Text="B" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding SetBText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                                <TextBlock Text="Universe (for complement)" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding UniverseText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Button Grid.Column="3" Content="Compute" VerticalAlignment="Bottom"
+                                    Command="{Binding ComputeSetOpsCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+                        </Grid>
+
+                        <Grid Margin="0,16,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="A ∪ B"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding UnionResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="A ∩ B"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding IntersectionResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="A \ B"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DifferenceResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="A △ B"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SymmetricDifferenceResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="U \ A"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ComplementAResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="A × B"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CartesianProductResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="P(A)"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" Margin="0,2" />
+                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PowerSetResult}" FontFamily="{DynamicResource MonoFontFamily}" TextWrapping="Wrap" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Relation analysis -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="RELATION ANALYZER" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Base set" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding RelationBaseText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                                <TextBlock Text="Relation pairs (a,b)" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding RelationPairsText, UpdateSourceTrigger=PropertyChanged}"
+                                         FontFamily="{DynamicResource MonoFontFamily}" />
+                            </StackPanel>
+                            <Button Grid.Column="2" Content="Analyze" VerticalAlignment="Bottom"
+                                    Command="{Binding AnalyzeRelationCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+                        </Grid>
+
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Properties -->
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="PROPERTIES" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                                <ItemsControl ItemsSource="{Binding Properties}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="160" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Label}"
+                                                           Foreground="{DynamicResource ForegroundSecondaryBrush}" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Display}"
+                                                           FontWeight="SemiBold" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Border Background="{DynamicResource SurfaceOverlayBrush}"
+                                        CornerRadius="6" Padding="10" Margin="0,12,0,0">
+                                    <TextBlock Text="{Binding RelationVerdict}" TextWrapping="Wrap" />
+                                </Border>
+
+                                <TextBlock Text="FAILURES" Style="{StaticResource CaptionTextStyle}" Margin="0,16,0,4" />
+                                <ItemsControl ItemsSource="{Binding RelationFailures}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                                       FontSize="{DynamicResource FontSizeCaption}"
+                                                       Foreground="{DynamicResource AccentDangerBrush}"
+                                                       TextWrapping="Wrap"
+                                                       Margin="0,1" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!-- Matrix -->
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="RELATION MATRIX" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <!-- Header row -->
+                                        <ItemsControl ItemsSource="{Binding MatrixHeader}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Width="36" Height="32"
+                                                            Background="{DynamicResource SurfaceOverlayBrush}"
+                                                            BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                                            BorderThickness="0,0,1,1">
+                                                        <TextBlock Text="{Binding}"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   FontFamily="{DynamicResource MonoFontFamily}" />
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <!-- Data rows -->
+                                        <ItemsControl ItemsSource="{Binding MatrixRows}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Width="36" Height="32"
+                                                                Background="{DynamicResource SurfaceOverlayBrush}"
+                                                                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                                                BorderThickness="0,0,1,1">
+                                                            <TextBlock Text="{Binding Header}"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                                                        </Border>
+                                                        <ItemsControl ItemsSource="{Binding Cells}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border Width="36" Height="32"
+                                                                            BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                                                            BorderThickness="0,0,1,1">
+                                                                        <TextBlock Text="{Binding Value, Converter={StaticResource BoolToBit}}"
+                                                                                   HorizontalAlignment="Center"
+                                                                                   VerticalAlignment="Center"
+                                                                                   FontFamily="{DynamicResource MonoFontFamily}" />
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="32,8">
+            <TextBlock Text="{Binding StatusLine}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeCaption}" />
+        </Border>
+    </Grid>
+</UserControl>

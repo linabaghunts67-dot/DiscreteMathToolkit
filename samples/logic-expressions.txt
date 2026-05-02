@@ -1,0 +1,22 @@
+# Sample logical expressions
+
+# Tautologies — always true
+p OR !p
+(p AND q) -> p
+p -> (p OR q)
+(p -> q) <-> (!q -> !p)
+
+# Contradictions — always false
+p AND !p
+(p OR !p) AND (q AND !q)
+
+# De Morgan
+!(p AND q) <-> (!p OR !q)
+!(p OR q) <-> (!p AND !q)
+
+# Material conditional rewriting
+(p -> q) <-> (!p OR q)
+
+# Three-variable
+(p AND q) OR (q AND r) OR (p AND r)
+(p -> q) AND (q -> r) -> (p -> r)

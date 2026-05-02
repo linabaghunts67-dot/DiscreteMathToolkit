@@ -1,0 +1,222 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.GraphTheoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             xmlns:c="clr-namespace:DiscreteMathToolkit.App.Views.Controls"
+             d:DataContext="{d:DesignInstance Type=vmp:GraphTheoryViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="320" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="32,24,32,16" Orientation="Horizontal">
+            <TextBlock Text="Graph Theory" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="BFS · DFS · Dijkstra · Prim · Kruskal"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeBody}"
+                       VerticalAlignment="Bottom"
+                       Margin="16,0,0,8" />
+        </StackPanel>
+
+        <!-- Canvas card -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Style="{StaticResource CardStyle}"
+                Margin="32,0,16,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <c:GraphCanvas x:Name="Canvas"
+                               Grid.Row="0"
+                               RenderState="{Binding RenderState}" />
+
+                <!-- Explanation strip -->
+                <Border Grid.Row="1"
+                        Background="{DynamicResource SurfaceOverlayBrush}"
+                        CornerRadius="6"
+                        Padding="14,10"
+                        Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="STEP" Style="{StaticResource CaptionTextStyle}" />
+                        <TextBlock Text="{Binding Explanation}"
+                                   FontSize="{DynamicResource FontSizeBody}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Right side panel -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,32,16">
+            <StackPanel>
+                <!-- ================= ALGORITHM ================= -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="ALGORITHM" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <ComboBox ItemsSource="{Binding Algorithms}"
+                                  SelectedItem="{Binding SelectedAlgorithm, Mode=TwoWay}" />
+
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Start node" VerticalAlignment="Center" Margin="0,0,8,0"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}" />
+                            <TextBox Grid.Column="1" Text="{Binding StartNodeText, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+
+                        <Button Content="Run algorithm"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding RunAlgorithmCommand}"
+                                Margin="0,12,0,4" />
+
+                        <TextBlock Text="{Binding ResultSummary}"
+                                   Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                   TextWrapping="Wrap"
+                                   FontSize="{DynamicResource FontSizeCaption}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- ================= PLAYBACK ================= -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="PLAYBACK" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="◀" Command="{Binding StepPreviousCommand}" Margin="0,0,4,0" />
+                            <Button Grid.Column="1" Content="▶" Command="{Binding TogglePlayCommand}" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,4,0" />
+                            <Button Grid.Column="2" Content="▶▶" Command="{Binding StepNextCommand}" Margin="0,0,4,0" />
+                            <Button Grid.Column="3" Content="⟲" Command="{Binding ResetPlaybackCommand}" />
+                        </Grid>
+
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Speed" VerticalAlignment="Center" Margin="0,0,8,0"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}" />
+                            <Slider Grid.Column="1"
+                                    Minimum="0.25" Maximum="4" Value="{Binding PlaybackSpeed, Mode=TwoWay}"
+                                    TickFrequency="0.25" SmallChange="0.25" LargeChange="1"
+                                    IsSnapToTickEnabled="True" Style="{StaticResource SliderStyle}" />
+                        </Grid>
+
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                   FontSize="{DynamicResource FontSizeCaption}">
+                            <Run Text="Step " />
+                            <Run Text="{Binding StepIndex, Mode=OneWay}" />
+                            <Run Text=" of " />
+                            <Run Text="{Binding TotalSteps, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- ================= EDITOR ================= -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="EDITOR" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <CheckBox Content="Directed" IsChecked="{Binding IsDirected, Mode=TwoWay}" Margin="0,0,12,0" />
+                            <CheckBox Content="Weighted" IsChecked="{Binding IsWeighted, Mode=TwoWay}" />
+                        </StackPanel>
+
+                        <!-- Add node -->
+                        <TextBlock Text="Add node" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" Margin="0,4,0,4" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding NewNodeLabel, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="1" Content="+" Width="36" Margin="6,0,0,0" Command="{Binding AddNodeCommand}" />
+                        </Grid>
+
+                        <!-- Add edge -->
+                        <TextBlock Text="Add edge" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" Margin="0,12,0,4" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding NewEdgeFrom, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Grid.Column="1" Text="{Binding NewEdgeTo, UpdateSourceTrigger=PropertyChanged}" Margin="4,0" />
+                            <TextBox Grid.Column="2" Text="{Binding NewEdgeWeight, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsWeighted}" />
+                            <Button Grid.Column="3" Content="+" Width="36" Margin="6,0,0,0" Command="{Binding AddEdgeCommand}" />
+                        </Grid>
+                        <TextBlock Margin="0,4,0,0" FontSize="{DynamicResource FontSizeCaption}"
+                                   Foreground="{DynamicResource ForegroundMutedBrush}"
+                                   Text="Use node labels or numeric ids. Weight defaults to 1." />
+
+                        <!-- Helpers -->
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Sample" Command="{Binding LoadSampleCommand}" Margin="0,0,4,0" />
+                            <Button Grid.Column="1" Content="Clear" Command="{Binding ClearGraphCommand}" Margin="4,0,0,0" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- ================= FILE & EXPORT ================= -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="GRAPH FILE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Load…" Command="{Binding LoadGraphCommand}" Margin="0,0,4,0" />
+                            <Button Grid.Column="1" Content="Save…" Command="{Binding SaveGraphCommand}" Margin="4,0,0,0" />
+                        </Grid>
+                        <Button Content="Export result…"
+                                Command="{Binding ExportResultCommand}"
+                                Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status bar -->
+        <Border Grid.Row="2" Grid.ColumnSpan="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="32,8">
+            <TextBlock Text="{Binding StatusLine}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeCaption}" />
+        </Border>
+    </Grid>
+</UserControl>

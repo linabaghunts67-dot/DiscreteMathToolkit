@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>DiscreteMathToolkit.Tests</RootNamespace>
+    <AssemblyName>DiscreteMathToolkit.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiscreteMathToolkit.Core\DiscreteMathToolkit.Core.csproj" />
+    <ProjectReference Include="..\DiscreteMathToolkit.Infrastructure\DiscreteMathToolkit.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

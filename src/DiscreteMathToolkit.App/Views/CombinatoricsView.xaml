@@ -1,0 +1,209 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.CombinatoricsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vmp:CombinatoricsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="32,24,32,16" Orientation="Horizontal">
+            <TextBlock Text="Combinatorics" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="P(n,k) · C(n,k) · Pascal's triangle"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeBody}"
+                       VerticalAlignment="Bottom"
+                       Margin="16,0,0,8" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="32,0,32,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT: Calculator -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="CALCULATOR" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="n" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                            <TextBox Text="{Binding NText, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="8,0,8,0">
+                            <TextBlock Text="k" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                            <TextBox Text="{Binding KText, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <Button Grid.Column="2" Content="Compute" Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding ComputeAllCommand}" VerticalAlignment="Bottom" />
+                    </Grid>
+
+                    <!-- Results table -->
+                    <StackPanel Margin="0,16,0,0">
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="n!"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                            <TextBlock Grid.Column="1" Text="{Binding FactorialResult}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="P(n,k) = n! / (n-k)!"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                            <TextBlock Grid.Column="1" Text="{Binding PermutationsResult}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="C(n,k) = n! / k!(n-k)!"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                            <TextBlock Grid.Column="1" Text="{Binding CombinationsResult}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="n^k (variations w/ rep.)"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                            <TextBlock Grid.Column="1" Text="{Binding VariationsRepResult}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="C(n+k-1, k) (multiset)"
+                                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                       FontFamily="{DynamicResource MonoFontFamily}" />
+                            <TextBlock Grid.Column="1" Text="{Binding CombinationsRepResult}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                    </StackPanel>
+
+                    <TextBlock Margin="0,16,0,0"
+                               Foreground="{DynamicResource ForegroundMutedBrush}"
+                               FontSize="{DynamicResource FontSizeCaption}"
+                               TextWrapping="Wrap"
+                               Text="Computed using BigInteger — works for arbitrarily large n. n=200 is no problem." />
+                </StackPanel>
+            </Border>
+
+            <!-- RIGHT: Pascal -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="8,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="PASCAL'S TRIANGLE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Rows" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource ForegroundSecondaryBrush}" Margin="0,0,8,0" />
+                        <Slider Grid.Column="1" Minimum="1" Maximum="16"
+                                Value="{Binding PascalRowsCount, Mode=TwoWay}"
+                                IsSnapToTickEnabled="True"
+                                TickFrequency="1"
+                                Style="{StaticResource SliderStyle}" />
+                        <Button Grid.Column="2" Content="Build" Margin="8,0,0,0"
+                                Command="{Binding BuildPascalCommand}" />
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="2" Margin="0,12,0,0"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding PascalRows}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Cells}" HorizontalAlignment="Center">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="56" Height="36" Margin="2"
+                                                        CornerRadius="4"
+                                                        Background="{DynamicResource SurfaceOverlayBrush}"
+                                                        BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                                                        BorderThickness="1">
+                                                    <TextBlock Text="{Binding Value}"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontFamily="{DynamicResource MonoFontFamily}"
+                                                               FontSize="11"
+                                                               TextTrimming="CharacterEllipsis" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="3" Content="Export Pascal's triangle…"
+                            Command="{Binding ExportPascalCommand}"
+                            Margin="0,12,0,0" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Status bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="32,8">
+            <TextBlock Text="{Binding StatusLine}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeCaption}" />
+        </Border>
+    </Grid>
+</UserControl>

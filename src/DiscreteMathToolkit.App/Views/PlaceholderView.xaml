@@ -1,0 +1,15 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.PlaceholderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Margin="40">
+            <TextBlock Text="{Binding Title}" Style="{StaticResource DisplayTextStyle}" HorizontalAlignment="Center" />
+            <TextBlock Text="{Binding Message}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeHeading}"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Margin="0,16,0,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>

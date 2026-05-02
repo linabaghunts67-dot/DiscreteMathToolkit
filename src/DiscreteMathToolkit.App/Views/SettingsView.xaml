@@ -1,0 +1,104 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vmp:SettingsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource SurfaceBaseBrush}">
+        <StackPanel Margin="40,32,40,40" MaxWidth="780">
+
+            <TextBlock Text="Settings" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="Theme, logs, and about." Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeHeading}" Margin="0,4,0,32" />
+
+            <!-- Theme -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="THEME" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                    <TextBlock Text="Switch between dark and light visual styles."
+                               Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,12" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Dark" Command="{Binding SetDarkCommand}" Width="120" Margin="0,0,8,0" />
+                        <Button Content="Light" Command="{Binding SetLightCommand}" Width="120" />
+                    </StackPanel>
+                    <TextBlock Margin="0,12,0,0" FontSize="{DynamicResource FontSizeCaption}"
+                               Foreground="{DynamicResource ForegroundMutedBrush}">
+                        <Run Text="Current: " />
+                        <Run Text="{Binding SelectedTheme}" FontWeight="SemiBold" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Logging -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="LOGGING" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                    <TextBlock Text="Logs are written daily and kept for 14 days. Useful for diagnosing problems."
+                               Foreground="{DynamicResource ForegroundSecondaryBrush}" TextWrapping="Wrap" />
+                    <Border Background="{DynamicResource SurfaceOverlayBrush}" CornerRadius="6" Padding="10" Margin="0,12,0,12">
+                        <TextBlock Text="{Binding LogDirectory}" FontFamily="{DynamicResource MonoFontFamily}" FontSize="{DynamicResource FontSizeCaption}" TextWrapping="Wrap" />
+                    </Border>
+                    <Button Content="Open log folder" Command="{Binding OpenLogFolderCommand}" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <!-- Keyboard shortcuts -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="KEYBOARD SHORTCUTS" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Space" FontFamily="{DynamicResource MonoFontFamily}" Foreground="{DynamicResource AccentPrimaryBrush}" />
+                        <TextBlock Grid.Column="1" Text="Toggle play/pause on Graph and Trees pages" />
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="→" FontFamily="{DynamicResource MonoFontFamily}" Foreground="{DynamicResource AccentPrimaryBrush}" />
+                        <TextBlock Grid.Column="1" Text="Next playback step" />
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="←" FontFamily="{DynamicResource MonoFontFamily}" Foreground="{DynamicResource AccentPrimaryBrush}" />
+                        <TextBlock Grid.Column="1" Text="Previous playback step" />
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="R" FontFamily="{DynamicResource MonoFontFamily}" Foreground="{DynamicResource AccentPrimaryBrush}" />
+                        <TextBlock Grid.Column="1" Text="Reset playback" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- About -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="ABOUT" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+                    <TextBlock>
+                        <Run Text="Discrete Math Toolkit" FontWeight="SemiBold" />
+                        <Run Text=" version " />
+                        <Run Text="{Binding AppVersion, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource ForegroundSecondaryBrush}" TextWrapping="Wrap">
+                        Interactive learning tool covering graph algorithms, trees, propositional logic, combinatorics, number systems, and sets &amp; relations. Built with .NET 8 and WPF.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

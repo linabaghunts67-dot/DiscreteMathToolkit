@@ -1,0 +1,18 @@
+# Sample relations — format: "base = {...}" then "R = {(a,b),...}"
+
+# Equivalence relation (mod 3 on {1..6})
+base = { 1, 2, 3, 4, 5, 6 }
+R = { (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
+      (1,4),(4,1),(2,5),(5,2),(3,6),(6,3) }
+
+# Partial order (≤ on {1,2,3})
+base = { 1, 2, 3 }
+R = { (1,1),(2,2),(3,3),(1,2),(1,3),(2,3) }
+
+# Strictly less-than (irreflexive, transitive, antisymmetric)
+base = { 1, 2, 3 }
+R = { (1,2),(2,3),(1,3) }
+
+# Symmetric but not transitive
+base = { 1, 2, 3 }
+R = { (1,2),(2,1),(2,3),(3,2) }

@@ -1,0 +1,125 @@
+<Window x:Class="DiscreteMathToolkit.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:DiscreteMathToolkit.App.ViewModels"
+        Title="Discrete Math Toolkit"
+        Width="1280" Height="820"
+        MinWidth="980" MinHeight="640"
+        Background="{DynamicResource SurfaceBaseBrush}"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{DynamicResource UiFontFamily}">
+
+    <Window.Resources>
+        <!-- Sidebar item template -->
+        <DataTemplate x:Key="SidebarItemTemplate" DataType="{x:Type vm:SidebarItem}">
+            <Grid Height="44" Margin="8,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0"
+                        Width="32" Height="32"
+                        CornerRadius="6"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Background="{DynamicResource SurfaceOverlayBrush}">
+                    <TextBlock Text="{Binding Glyph}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource AccentPrimaryBrush}" />
+                </Border>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Label}"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           Foreground="{DynamicResource ForegroundPrimaryBrush}"
+                           FontSize="{DynamicResource FontSizeBody}" />
+            </Grid>
+        </DataTemplate>
+
+        <!-- Sidebar list item style: removes default selection chrome, paints accent rail on selected -->
+        <Style x:Key="SidebarListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Grid>
+                            <Border x:Name="Bg"
+                                    Background="Transparent"
+                                    CornerRadius="6"
+                                    Margin="6,2" />
+                            <Border x:Name="Rail"
+                                    Width="3"
+                                    HorizontalAlignment="Left"
+                                    Background="Transparent"
+                                    Margin="0,8" />
+                            <ContentPresenter />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SurfaceOverlayBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SurfaceElevatedBrush}" />
+                                <Setter TargetName="Rail" Property="Background" Value="{DynamicResource AccentPrimaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{DynamicResource SurfaceRaisedBrush}" BorderBrush="{DynamicResource StrokeSubtleBrush}" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Brand -->
+                <StackPanel Grid.Row="0" Margin="20,24,20,16">
+                    <TextBlock Text="Discrete Math" Style="{StaticResource HeadingTextStyle}" />
+                    <TextBlock Text="Toolkit" Style="{StaticResource HeadingTextStyle}"
+                               Foreground="{DynamicResource AccentPrimaryBrush}" />
+                    <TextBlock Text="Interactive learning" Style="{StaticResource CaptionTextStyle}"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+
+                <!-- Nav -->
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding SidebarItems}"
+                         SelectedItem="{Binding SelectedSidebarItem, Mode=TwoWay}"
+                         ItemTemplate="{StaticResource SidebarItemTemplate}"
+                         ItemContainerStyle="{StaticResource SidebarListBoxItemStyle}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+
+                <!-- Footer: theme toggle -->
+                <StackPanel Grid.Row="2" Margin="14,12">
+                    <Button Content="Toggle theme"
+                            Command="{Binding ToggleThemeCommand}"
+                            Style="{StaticResource GhostButtonStyle}"
+                            HorizontalAlignment="Stretch" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+    </Grid>
+</Window>

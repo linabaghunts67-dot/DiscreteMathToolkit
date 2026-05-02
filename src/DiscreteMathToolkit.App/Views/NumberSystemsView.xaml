@@ -1,0 +1,232 @@
+<UserControl x:Class="DiscreteMathToolkit.App.Views.NumberSystemsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vmp="clr-namespace:DiscreteMathToolkit.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vmp:NumberSystemsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Background="{DynamicResource SurfaceBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="32,24,32,16" Orientation="Horizontal">
+            <TextBlock Text="Number Systems" Style="{StaticResource DisplayTextStyle}" />
+            <TextBlock Text="Bases · Two's complement · Hamming(7,4)"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeBody}"
+                       VerticalAlignment="Bottom"
+                       Margin="16,0,0,8" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Margin="32,0,32,16" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Base conversion -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="BASE CONVERSION" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Input" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding ConvertInput, UpdateSourceTrigger=PropertyChanged}"
+                                         FontFamily="{DynamicResource MonoFontFamily}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                                <TextBlock Text="From base" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <ComboBox ItemsSource="{Binding AvailableBases}" SelectedItem="{Binding ConvertFromBase, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                                <TextBlock Text="To base" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <ComboBox ItemsSource="{Binding AvailableBases}" SelectedItem="{Binding ConvertToBase, Mode=TwoWay}" />
+                            </StackPanel>
+                            <Button Grid.Column="3" Content="Convert" VerticalAlignment="Bottom"
+                                    Command="{Binding ConvertBaseCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+                        </Grid>
+
+                        <Border Grid.Row="2"
+                                Background="{DynamicResource SurfaceOverlayBrush}"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,12,0,0">
+                            <StackPanel>
+                                <TextBlock Text="OUTPUT" Style="{StaticResource CaptionTextStyle}" />
+                                <TextBlock Text="{Binding ConvertOutput}"
+                                           FontFamily="{DynamicResource MonoFontFamily}"
+                                           FontSize="{DynamicResource FontSizeHeading}"
+                                           Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <ItemsControl Grid.Row="3" ItemsSource="{Binding ConversionStepDescriptions}" Margin="0,12,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"
+                                               FontFamily="{DynamicResource MonoFontFamily}"
+                                               FontSize="{DynamicResource FontSizeCaption}"
+                                               Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,1" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+                <!-- Two's complement -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="TWO'S COMPLEMENT" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Decimal value" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <TextBox Text="{Binding TwosComplementInput, UpdateSourceTrigger=PropertyChanged}"
+                                         FontFamily="{DynamicResource MonoFontFamily}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                                <TextBlock Text="Bit width" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <ComboBox ItemsSource="{Binding AvailableBitWidths}" SelectedItem="{Binding TwosComplementBits, Mode=TwoWay}" />
+                            </StackPanel>
+                            <Button Grid.Column="2" Content="Compute" VerticalAlignment="Bottom"
+                                    Command="{Binding ComputeTwosComplementCommand}" />
+                        </Grid>
+                        <Border Background="{DynamicResource SurfaceOverlayBrush}"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,12,0,0">
+                            <TextBlock Text="{Binding TwosComplementOutput}"
+                                       FontFamily="{DynamicResource MonoFontFamily}"
+                                       FontSize="{DynamicResource FontSizeHeading}" />
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Hamming -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="HAMMING(7,4) ENCODER / DECODER" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Encoder -->
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="ENCODE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                                <TextBlock Text="4 data bits" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding HammingDataBits, UpdateSourceTrigger=PropertyChanged}"
+                                             FontFamily="{DynamicResource MonoFontFamily}" />
+                                    <Button Grid.Column="1" Content="Encode" Margin="6,0,0,0"
+                                            Command="{Binding EncodeHammingCommand}" />
+                                </Grid>
+                                <Border Background="{DynamicResource SurfaceOverlayBrush}"
+                                        CornerRadius="6" Padding="10" Margin="0,8,0,8">
+                                    <StackPanel>
+                                        <TextBlock Text="Encoded (7 bits):" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                        <TextBlock Text="{Binding HammingEncodedBits}"
+                                                   FontFamily="{DynamicResource MonoFontFamily}"
+                                                   FontSize="{DynamicResource FontSizeHeading}" />
+                                    </StackPanel>
+                                </Border>
+                                <ItemsControl ItemsSource="{Binding HammingEncodeSteps}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontFamily="{DynamicResource MonoFontFamily}"
+                                                       FontSize="{DynamicResource FontSizeCaption}"
+                                                       Foreground="{DynamicResource ForegroundSecondaryBrush}" TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!-- Decoder -->
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="DECODE" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,8" />
+                                <TextBlock Text="7 received bits" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding HammingReceivedBits, UpdateSourceTrigger=PropertyChanged}"
+                                             FontFamily="{DynamicResource MonoFontFamily}" />
+                                    <Button Grid.Column="1" Content="Decode" Margin="6,0,0,0"
+                                            Command="{Binding DecodeHammingCommand}" />
+                                </Grid>
+                                <Border Background="{DynamicResource SurfaceOverlayBrush}"
+                                        CornerRadius="6" Padding="10" Margin="0,8,0,8">
+                                    <StackPanel>
+                                        <TextBlock Text="Recovered data:" Foreground="{DynamicResource ForegroundSecondaryBrush}" FontSize="{DynamicResource FontSizeCaption}" />
+                                        <TextBlock Text="{Binding HammingDecodedData}"
+                                                   FontFamily="{DynamicResource MonoFontFamily}"
+                                                   FontSize="{DynamicResource FontSizeHeading}" />
+                                        <TextBlock Text="{Binding HammingErrorReport}"
+                                                   Foreground="{DynamicResource AccentSecondaryBrush}"
+                                                   FontSize="{DynamicResource FontSizeCaption}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <ItemsControl ItemsSource="{Binding HammingDecodeSteps}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontFamily="{DynamicResource MonoFontFamily}"
+                                                       FontSize="{DynamicResource FontSizeCaption}"
+                                                       Foreground="{DynamicResource ForegroundSecondaryBrush}" TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Margin="0,12,0,0"
+                                   Foreground="{DynamicResource ForegroundMutedBrush}"
+                                   FontSize="{DynamicResource FontSizeCaption}"
+                                   TextWrapping="Wrap"
+                                   Text="Hamming(7,4) detects and corrects any single-bit error and detects most two-bit errors. Try flipping one bit in the received sequence to see correction work." />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource StrokeSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="32,8">
+            <TextBlock Text="{Binding StatusLine}"
+                       Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                       FontSize="{DynamicResource FontSizeCaption}" />
+        </Border>
+    </Grid>
+</UserControl>

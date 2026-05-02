@@ -1,0 +1,13 @@
+# Sample binary trees, given as BST insert sequences (whitespace-separated)
+
+# Balanced classic
+4 2 6 1 3 5 7
+
+# Skewed right (worst-case BST)
+1 2 3 4 5 6 7
+
+# Skewed left
+7 6 5 4 3 2 1
+
+# Larger random-ish
+50 30 70 20 40 60 80 10 25 35 45 55 65 75 85
