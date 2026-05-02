@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiscreteMathToolkit.App.Mvvm;
@@ -37,7 +38,7 @@ public sealed partial class SettingsViewModel : ViewModelBase, IPageViewModel
     {
         try
         {
-            Directory.CreateDirectory(LogDirectory);
+            System.IO.Directory.CreateDirectory(LogDirectory);
             Process.Start(new ProcessStartInfo
             {
                 FileName = LogDirectory,

@@ -10,15 +10,15 @@ An interactive desktop application for exploring discrete mathematics: graph alg
 
 The app is divided into seven feature pages, navigated via the sidebar:
 
-| Module | What you can do |
-|---|---|
-| **Dashboard** | Tile-based landing page; click any tile to jump to that module. |
-| **Graph Theory** | Build a graph (nodes, weighted/unweighted edges, directed/undirected). Run BFS, DFS, Dijkstra's shortest paths, Kruskal's MST, Prim's MST. Watch each algorithm execute step-by-step with live highlights. |
-| **Trees** | Build a BST from a number sequence; insert, delete, and search single values. Run all four traversals (Pre-order, In-order, Post-order, Level-order) with animated playback. Reconstruct trees from Pre+In or Post+In sequences. |
-| **Logic & Truth Tables** | Parse propositional formulas (with both symbolic `&`,`|`,`!`,`^`,`->`,`<->` and word `AND`,`OR`,`NOT`,...). Build full truth tables, classify expressions as tautology / contradiction / contingency, and apply Boolean simplification rules. |
-| **Combinatorics** | BigInteger calculator: factorial, permutations P(n,k), combinations C(n,k), variations and combinations with repetition. Interactive Pascal's triangle, sized 1–16 rows. |
-| **Number Systems** | Convert between any two bases 2–36 with step-by-step explanation. Compute two's complement at 4/8/16/32/64 bits. Encode and decode Hamming(7,4) error-correcting codes — automatically detects and corrects single-bit errors. |
-| **Sets & Relations** | All standard set operations (∪, ∩, \, △, complement, ×, power set). Relation analyzer that checks reflexivity, symmetry, antisymmetry, transitivity, and identifies equivalence relations and partial orders, with a visual relation matrix. |
+| Module                   | What you can do                                                                                                                                                                                                                              |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Dashboard**            | Tile-based landing page; click any tile to jump to that module.                                                                                                                                                                              |
+| **Graph Theory**         | Build a graph (nodes, weighted/unweighted edges, directed/undirected). Run BFS, DFS, Dijkstra's shortest paths, Kruskal's MST, Prim's MST. Watch each algorithm execute step-by-step with live highlights.                                   |
+| **Trees**                | Build a BST from a number sequence; insert, delete, and search single values. Run all four traversals (Pre-order, In-order, Post-order, Level-order) with animated playback. Reconstruct trees from Pre+In or Post+In sequences.             |
+| **Logic & Truth Tables** | Parse propositional formulas (with both symbolic `&`,`                                                                                                                                                                                       | `,`!`,`^`,`->`,`<->`and word`AND`,`OR`,`NOT`,...). Build full truth tables, classify expressions as tautology / contradiction / contingency, and apply Boolean simplification rules. |
+| **Combinatorics**        | BigInteger calculator: factorial, permutations P(n,k), combinations C(n,k), variations and combinations with repetition. Interactive Pascal's triangle, sized 1–16 rows.                                                                     |
+| **Number Systems**       | Convert between any two bases 2–36 with step-by-step explanation. Compute two's complement at 4/8/16/32/64 bits. Encode and decode Hamming(7,4) error-correcting codes — automatically detects and corrects single-bit errors.               |
+| **Sets & Relations**     | All standard set operations (∪, ∩, \, △, complement, ×, power set). Relation analyzer that checks reflexivity, symmetry, antisymmetry, transitivity, and identifies equivalence relations and partial orders, with a visual relation matrix. |
 
 ## Architecture
 
@@ -26,26 +26,167 @@ The solution is split into five projects following SOLID and clean architecture 
 
 ```
 DiscreteMathToolkit/
-├── src/
-│   ├── DiscreteMathToolkit.Core/             pure algorithms; no UI dependencies (net8.0)
-│   ├── DiscreteMathToolkit.Visualization/    layout engines, playback abstraction (net8.0)
-│   ├── DiscreteMathToolkit.Infrastructure/   logging, JSON persistence, exporters (net8.0)
-│   ├── DiscreteMathToolkit.App/              WPF UI, MVVM, dependency injection (net8.0-windows)
-│   └── DiscreteMathToolkit.Tests/            xUnit + FluentAssertions, 106 tests (net8.0)
-├── samples/                                   sample graph JSON, logic expressions, tree inputs, relation examples
-├── docs/                                      architecture, user guide
-└── DiscreteMathToolkit.sln
+├── .gitignore
+├── Directory.Build.props
+├── DiscreteMathToolkit.sln
+├── README.md
+├── global.json
+├── docs/
+│   ├── architecture.md
+│   └── user-guide.md
+├── samples/
+│   ├── graph-konigsberg.json
+│   ├── graph-petersen.json
+│   ├── graph-pipeline-directed.json
+│   ├── graph-weighted-small.json
+│   ├── logic-expressions.txt
+│   ├── relations-examples.txt
+│   └── trees-bst-inputs.txt
+└── src/
+    ├── DiscreteMathToolkit.Core/
+    │   ├── DiscreteMathToolkit.Core.csproj
+    │   ├── Algorithms/
+    │   │   └── AlgorithmStep.cs
+    │   ├── Combinatorics/
+    │   │   └── CombinatoricsCalculator.cs
+    │   ├── Common/
+    │   │   └── Guard.cs
+    │   ├── Graphs/
+    │   │   ├── Graph.cs
+    │   │   ├── GraphNode.cs
+    │   │   └── Algorithms/
+    │   │       ├── BreadthFirstSearch.cs
+    │   │       ├── DepthFirstSearch.cs
+    │   │       ├── Dijkstra.cs
+    │   │       ├── Kruskal.cs
+    │   │       └── Prim.cs
+    │   ├── Logic/
+    │   │   ├── BooleanSimplifier.cs
+    │   │   ├── LogicNode.cs
+    │   │   ├── LogicParser.cs
+    │   │   ├── LogicTokenizer.cs
+    │   │   ├── Token.cs
+    │   │   └── TruthTable.cs
+    │   ├── NumberSystems/
+    │   │   ├── BaseConverter.cs
+    │   │   └── ErrorCorrectingCodes.cs
+    │   ├── Sets/
+    │   │   ├── RelationAnalyzer.cs
+    │   │   └── SetOperations.cs
+    │   └── Trees/
+    │       ├── BinaryTree.cs
+    │       ├── TreeReconstruction.cs
+    │       └── TreeTraversals.cs
+    ├── DiscreteMathToolkit.Visualization/
+    │   ├── DiscreteMathToolkit.Visualization.csproj
+    │   ├── Layout/
+    │   │   ├── CircularLayoutEngine.cs
+    │   │   ├── ForceDirectedLayoutEngine.cs
+    │   │   ├── GraphLayout.cs
+    │   │   └── TreeLayoutEngine.cs
+    │   └── Playback/
+    │       └── StepController.cs
+    ├── DiscreteMathToolkit.Infrastructure/
+    │   ├── DiscreteMathToolkit.Infrastructure.csproj
+    │   ├── Export/
+    │   │   └── FileExportService.cs
+    │   ├── Logging/
+    │   │   └── AppLogger.cs
+    │   └── Persistence/
+    │       └── JsonGraphRepository.cs
+    ├── DiscreteMathToolkit.App/
+    │   ├── DiscreteMathToolkit.App.csproj
+    │   ├── App.xaml
+    │   ├── App.xaml.cs
+    │   ├── MainWindow.xaml
+    │   ├── MainWindow.xaml.cs
+    │   ├── Converters/
+    │   │   └── Converters.cs
+    │   ├── Mvvm/
+    │   │   ├── NavigationService.cs
+    │   │   └── ViewModelBase.cs
+    │   ├── Services/
+    │   │   └── ThemeService.cs
+    │   ├── Themes/
+    │   │   ├── ColorsDark.xaml
+    │   │   ├── ColorsLight.xaml
+    │   │   └── ControlStyles.xaml
+    │   ├── ViewModels/
+    │   │   ├── DashboardViewModel.cs
+    │   │   ├── MainViewModel.cs
+    │   │   └── Pages/
+    │   │       ├── CombinatoricsViewModel.cs
+    │   │       ├── GraphAlgorithmAdapters.cs
+    │   │       ├── GraphRenderState.cs
+    │   │       ├── GraphTheoryViewModel.cs
+    │   │       ├── LogicViewModel.cs
+    │   │       ├── NumberSystemsViewModel.cs
+    │   │       ├── PlaceholderPageViewModel.cs
+    │   │       ├── SetsRelationsViewModel.cs
+    │   │       ├── SettingsViewModel.cs
+    │   │       ├── TreeRenderState.cs
+    │   │       └── TreesViewModel.cs
+    │   └── Views/
+    │       ├── CombinatoricsView.xaml
+    │       ├── CombinatoricsView.xaml.cs
+    │       ├── DashboardView.xaml
+    │       ├── DashboardView.xaml.cs
+    │       ├── GraphTheoryView.xaml
+    │       ├── GraphTheoryView.xaml.cs
+    │       ├── LogicView.xaml
+    │       ├── LogicView.xaml.cs
+    │       ├── NumberSystemsView.xaml
+    │       ├── NumberSystemsView.xaml.cs
+    │       ├── PlaceholderView.xaml
+    │       ├── PlaceholderView.xaml.cs
+    │       ├── SetsRelationsView.xaml
+    │       ├── SetsRelationsView.xaml.cs
+    │       ├── SettingsView.xaml
+    │       ├── SettingsView.xaml.cs
+    │       ├── TreesView.xaml
+    │       ├── TreesView.xaml.cs
+    │       └── Controls/
+    │           ├── GraphCanvas.cs
+    │           └── TreeCanvas.cs
+    └── DiscreteMathToolkit.Tests/
+        ├── DiscreteMathToolkit.Tests.csproj
+        ├── Combinatorics/
+        │   └── CombinatoricsCalculatorTests.cs
+        ├── Graphs/
+        │   ├── BfsTests.cs
+        │   ├── DfsTests.cs
+        │   ├── DijkstraTests.cs
+        │   ├── GraphTests.cs
+        │   ├── KruskalTests.cs
+        │   └── PrimTests.cs
+        ├── Logic/
+        │   ├── BooleanSimplifierTests.cs
+        │   ├── LogicParserTests.cs
+        │   ├── LogicTokenizerTests.cs
+        │   └── TruthTableTests.cs
+        ├── NumberSystems/
+        │   ├── BaseConverterTests.cs
+        │   └── HammingTests.cs
+        ├── Sets/
+        │   ├── RelationAnalyzerTests.cs
+        │   └── SetOperationsTests.cs
+        └── Trees/
+            ├── BinaryTreeTests.cs
+            ├── TreeReconstructionTests.cs
+            └── TreeTraversalsTests.cs
 ```
 
 ## Build & run
 
 ### Requirements
+
 - **Windows 10/11** (WPF requires Windows)
 - **.NET 8 SDK** (download from <https://dotnet.microsoft.com/download/dotnet/8.0>)
 
 ### Quick start
+
 ```powershell
-git clone <repo-url>
+git clone <https://github.com/linabaghunts67-dot/DiscreteMathToolkit>
 cd DiscreteMathToolkit
 dotnet restore
 dotnet build
@@ -63,15 +204,15 @@ dotnet test
 
 Should report **`Passed!  -  Failed: 0, Passed: 106, Skipped: 0, Total: 106`**. The test project covers every algorithm in `Core`:
 
-| Area | Tests |
-|---|---:|
-| Graph algorithms (BFS, DFS, Dijkstra, Kruskal, Prim, adjacency matrix) | 13 |
-| Trees (BST, traversals, reconstruction) | 11 |
-| Logic (tokenizer, parser, truth table, simplifier) | 22* |
-| Combinatorics | 30* |
-| Number systems & Hamming(7,4) | 18* |
-| Sets & relations | 12 |
-| **Total** | **106** |
+| Area                                                                   |   Tests |
+| ---------------------------------------------------------------------- | ------: |
+| Graph algorithms (BFS, DFS, Dijkstra, Kruskal, Prim, adjacency matrix) |      13 |
+| Trees (BST, traversals, reconstruction)                                |      11 |
+| Logic (tokenizer, parser, truth table, simplifier)                     |    22\* |
+| Combinatorics                                                          |    30\* |
+| Number systems & Hamming(7,4)                                          |    18\* |
+| Sets & relations                                                       |      12 |
+| **Total**                                                              | **106** |
 
 (\* counts include Theory test expansions)
 
@@ -90,6 +231,7 @@ The `samples/` folder contains files you can load through the app's Load… dial
 ## Logs
 
 Logs are written to:
+
 - **Windows:** `%LOCALAPPDATA%\DiscreteMathToolkit\logs\`
 
 Logs roll daily and are kept for 14 days. The Settings page has an "Open log folder" button.
@@ -98,12 +240,12 @@ Logs roll daily and are kept for 14 days. The Settings page has an "Open log fol
 
 On the Graph Theory and Trees pages:
 
-| Key | Action |
-|---|---|
-| `Space` | Toggle play/pause |
-| `→` | Step forward |
-| `←` | Step backward |
-| `R` | Reset playback to step 0 |
+| Key     | Action                   |
+| ------- | ------------------------ |
+| `Space` | Toggle play/pause        |
+| `→`     | Step forward             |
+| `←`     | Step backward            |
+| `R`     | Reset playback to step 0 |
 
 ## Tech stack
 
